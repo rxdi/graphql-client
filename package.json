@@ -1,6 +1,6 @@
 {
   "name": "@rxdi/graphql-client",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "main": "index.js",
   "author": "Kristiyan Tachev",
   "license": "MIT",
