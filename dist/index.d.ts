@@ -4,3 +4,4 @@ export declare class GraphqlModule {
     static forRoot(config: PresetConfig, documents?: any): ModuleWithServices;
 }
 export * from './injection.tokens';
+export * from './graphql-helpers';

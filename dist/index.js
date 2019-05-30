@@ -30,3 +30,4 @@ GraphqlModule = GraphqlModule_1 = __decorate([
 ], GraphqlModule);
 export { GraphqlModule };
 export * from './injection.tokens';
+export * from './graphql-helpers';

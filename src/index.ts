@@ -22,3 +22,4 @@ export class GraphqlModule {
 }
 
 export * from './injection.tokens';
+export * from './graphql-helpers';

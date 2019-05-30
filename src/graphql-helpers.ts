@@ -1,7 +1,7 @@
 import { Container } from '@rxdi/core';
 
 export function importQuery<T>(search: T) {
-    let result;
+    let result: any;
     const DOCUMENTS = Container.get('documents-graphql');
     Object.keys(DOCUMENTS)
     .filter(doc => {
