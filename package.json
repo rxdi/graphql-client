@@ -1,0 +1,22 @@
+{
+  "name": "@rxdi/graphql-client",
+  "version": "0.2.26",
+  "main": "index.js",
+  "author": "Kristiyan Tachev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rxdi/router"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.0",
+    "graphql": "^14.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.1",
+    "@rxdi/core": "^0.2.25"
+  },
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts"
+}
