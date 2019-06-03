@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "typescript": "^3.5.1",
-    "@rxdi/core": "^0.2.34"
+    "@rxdi/core": "^0.3.0"
   },
   "types": "./dist/index.d.ts",
   "module": "./dist/index.js",
