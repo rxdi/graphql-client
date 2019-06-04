@@ -1,7 +1,9 @@
-import { Container } from '@rxdi/core';
-export function importQuery(search) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@rxdi/core");
+function importQuery(search) {
     let result;
-    const DOCUMENTS = Container.get('documents-graphql');
+    const DOCUMENTS = core_1.Container.get('documents-graphql');
     Object.keys(DOCUMENTS)
         .filter(doc => {
         if (doc.indexOf(search) !== -1) {
@@ -13,3 +15,4 @@ export function importQuery(search) {
     }
     return result;
 }
+exports.importQuery = importQuery;

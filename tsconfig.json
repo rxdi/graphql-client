@@ -3,7 +3,7 @@
         "declaration": true,
         "target": "es6",
         "baseUrl": ".",
-        "module": "esnext",
+        "module": "commonjs",
         "stripInternal": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
