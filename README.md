@@ -37,7 +37,8 @@ import { LitElement } from '@rxdi/lit-html';
 import { importQuery, ApolloClient, QueryOptions, SubscriptionOptions, MutationOptions, DataProxy } from '@rxdi/graphql-client';
 
 export class BaseComponent extends LitElement {
-  @Injector(ApolloClient) public graphql: ApolloClient;
+  @Injector(ApolloClient)
+  public graphql: ApolloClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);
@@ -105,7 +106,9 @@ import { map } from 'rxjs/operators';
   }
 })
 export class DetailsComponent extends BaseComponent {
-  @RouteParams() params: { projectName: string };
+  @RouteParams()
+  private params: { projectName: string };
+
   getProject() {
     return this.query({
       query: 'get-project.query.graphql',
