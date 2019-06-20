@@ -42,9 +42,7 @@ let GraphqlModule = GraphqlModule_1 = class GraphqlModule {
                                 }
                             });
                             return forward(operation);
-                        }), apollo_link_1.split(
-                        // split based on operation type
-                        ({ query }) => {
+                        }), apollo_link_1.split(({ query }) => {
                             const { kind, operation } = apollo_utilities_1.getMainDefinition(query);
                             return (kind === 'OperationDefinition' &&
                                 operation === 'subscription');

@@ -34,13 +34,10 @@ import { DocumentTypes } from '../@introspection/documentTypes';
 import { from, Observable } from 'rxjs';
 import { IQuery, IMutation, ISubscription } from '../@introspection';
 import { LitElement } from '@rxdi/lit-html';
-import { DataProxy } from 'apollo-cache';
-import { ApolloClient as AC, QueryOptions, SubscriptionOptions, MutationOptions } from 'apollo-client';
-import { importQuery, ApolloClient } from '@rxdi/graphql-client';
-
+import { importQuery, ApolloClient, QueryOptions, SubscriptionOptions, MutationOptions, DataProxy } from '@rxdi/graphql-client';
 
 export class BaseComponent extends LitElement {
-  @Injector(ApolloClient) public graphql: AC<any>;
+  @Injector(ApolloClient) public graphql: ApolloClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);

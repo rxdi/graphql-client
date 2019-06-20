@@ -5,3 +5,5 @@ export declare class GraphqlModule {
 }
 export * from './graphql.injection';
 export * from './graphq.helpers';
+export { QueryOptions, SubscriptionOptions, MutationOptions } from 'apollo-client';
+export { DataProxy } from 'apollo-cache';

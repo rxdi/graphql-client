@@ -1,8 +1,13 @@
 import { Module, ModuleWithServices } from '@rxdi/core';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
-import { ApolloClient, GraphqlDocuments, GraphqlModuleConfig, noop } from './graphql.injection';
-import { ApolloClient as AC } from 'apollo-client';
+import {
+  ApolloClient,
+  GraphqlDocuments,
+  GraphqlModuleConfig,
+  noop
+} from './graphql.injection';
+import { ApolloClient as ApolloClientOriginal } from 'apollo-client';
 import { concat, ApolloLink, split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
@@ -25,7 +30,7 @@ export class GraphqlModule {
         {
           provide: ApolloClient,
           useFactory: () =>
-            new AC({
+            new ApolloClientOriginal({
               link: concat(
                 new ApolloLink((operation, forward) => {
                   const token = authorization || noop;
@@ -39,7 +44,6 @@ export class GraphqlModule {
                   return forward(operation);
                 }),
                 split(
-                  // split based on operation type
                   ({ query }) => {
                     const { kind, operation } = getMainDefinition(query);
                     return (
@@ -65,6 +69,7 @@ export class GraphqlModule {
   }
 }
 
-
 export * from './graphql.injection';
 export * from './graphq.helpers';
+export { QueryOptions, SubscriptionOptions, MutationOptions } from 'apollo-client';
+export { DataProxy } from 'apollo-cache';
