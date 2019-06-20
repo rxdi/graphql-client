@@ -64,3 +64,7 @@ export class GraphqlModule {
     };
   }
 }
+
+
+export * from './graphql.injection';
+export * from './graphq.helpers';
