@@ -2,7 +2,7 @@ import { Container } from '@rxdi/core';
 
 export function importQuery<T>(search: T) {
     let result: any;
-    const DOCUMENTS = Container.get('documents-graphql');
+    const DOCUMENTS = Container.get('graphql-documents');
     Object.keys(DOCUMENTS)
     .filter(doc => {
       if (doc.indexOf(<any>search) !== -1) {

@@ -9,11 +9,16 @@
     "url": "https://github.com/rxdi/router"
   },
   "dependencies": {
-    "apollo-boost": "^0.4.0",
-    "graphql": "^14.3.1"
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.3",
+    "apollo-link": "^1.2.12",
+    "apollo-link-http": "^1.5.15",
+    "apollo-link-ws": "^1.0.18",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "typescript": "^3.5.1",
+    "graphql": "^14.3.1",
     "@rxdi/core": "^0.5.20"
   },
   "types": "./dist/index.d.ts",

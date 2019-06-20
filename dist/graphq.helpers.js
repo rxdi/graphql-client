@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@rxdi/core");
 function importQuery(search) {
     let result;
-    const DOCUMENTS = core_1.Container.get('documents-graphql');
+    const DOCUMENTS = core_1.Container.get('graphql-documents');
     Object.keys(DOCUMENTS)
         .filter(doc => {
         if (doc.indexOf(search) !== -1) {

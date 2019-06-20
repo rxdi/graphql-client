@@ -2,56 +2,132 @@
 
 #### Install
 ```bash
-npm i @rxdi/router
+npm i @rxdi/graphql-client
 ```
 
 #### Define routes with forRoot these will be evaluated lazy
 
 ```typescript
-import { Component, Injector } from '@rxdi/core';
-import { html } from 'lit-html';
-import { subscribe } from 'lit-rx';
-import { from, timer, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IQuery } from '@introspection';
-import { GraphqlClient } from './graphql/injection.tokens';
-import { importQuery } from './graphql/graphql-helpers';
-import { BaseView } from './shared/base.component';
+import { Module } from '@rxdi/core';
+import { AppComponent } from './app.component';
+import { GraphqlModule } from '@rxdi/graphql-client';
+import { DOCUMENTS } from './@introspection/documents';
 
-@Component()
-export class AppComponent extends BaseView {
-  @Injector(GraphqlClient) private graphql: GraphqlClient;
+@Module({
+  imports: [
+    GraphqlModule.forRoot({
+      uri: 'http://localhost:9000/graphql',
+      pubsub: 'ws://localhost:9000/subscriptions',
+    }, DOCUMENTS),
+  ],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
 
-  render() {
-    return html`
-    <p>
-      ${subscribe(
-        from(this.getServerStatus()).pipe(
-          map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-        )
-      )}
-    </p>
-  `;
+
+#### Base component
+```typescript
+
+import { Injector } from '@rxdi/core';
+import { DocumentTypes } from '../@introspection/documentTypes';
+import { from, Observable } from 'rxjs';
+import { IQuery, IMutation, ISubscription } from '../@introspection';
+import { LitElement } from '@rxdi/lit-html';
+import { DataProxy } from 'apollo-cache';
+import { ApolloClient as AC, QueryOptions, SubscriptionOptions, MutationOptions } from 'apollo-client';
+import { importQuery, ApolloClient } from '@rxdi/graphql-client';
+
+
+export class BaseComponent extends LitElement {
+  @Injector(ApolloClient) public graphql: AC<any>;
+
+  query<T = IQuery>(options: ImportQueryMixin) {
+    options.query = importQuery(options.query);
+    return from(this.graphql.query.bind(this.graphql)(
+      options
+    ) as any) as Observable<{ data: T }>;
   }
 
-  getServerStatus = () => {
-    return from(
-      this.graphql.query<IQuery>({
-        query: importQuery('app.query.graphql')
-      })
-    ).pipe(
-      map(res => res.data),
-      map(res => res)
-    );
-  };
+  mutate<T = IMutation>(options: ImportMutationMixin) {
+    options.mutation = importQuery(options.mutation);
+    return from(this.graphql.mutate.bind(this.graphql)(
+      options
+    ) as any) as Observable<{ data: T }>;
+  }
 
-  peshO = async () => {
-      return html`
-      ${subscribe(of('gosho prosto shte rbot'))}
-      `
+  subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
+    options.query = importQuery(options.query);
+    return from(this.graphql.subscribe.bind(this.graphql)(
+      options
+    ) as any) as Observable<{ data: T }>;
   }
 }
 
-customElements.define('app-component', AppComponent);
+interface ImportQueryMixin extends QueryOptions {
+  query: DocumentTypes;
+}
 
+interface ImportSubscriptionMixin extends SubscriptionOptions {
+  query: DocumentTypes;
+}
+
+interface ImportMutationMixin extends MutationOptions {
+  mutation: DocumentTypes;
+  update?(proxy: DataProxy, res: {data: IMutation}): void;
+}
+
+```
+
+
+#### Usage
+
+```typescript
+import { Component, html, css, async } from '@rxdi/lit-html';
+import { BaseComponent } from '../../shared/base.component';
+import { RouteParams } from '@rxdi/router';
+import { map } from 'rxjs/operators';
+
+@Component({
+  selector: 'project-details-component',
+  style: css`
+    .container {
+      width: 1000px;
+    }
+  `,
+  template(this: DetailsComponent) {
+    return html`
+      <div class="container">
+        <card-component>
+          <div slot="content">
+            ${async(this.getProject())}
+          </div>
+        </card-component>
+      </div>
+    `;
+  }
+})
+export class DetailsComponent extends BaseComponent {
+  @RouteParams() params: { projectName: string };
+  getProject() {
+    return this.query({
+      query: 'get-project.query.graphql',
+      variables: {
+        name: this.params.projectName
+      }
+    }).pipe(
+      map(res => res.data.getProject),
+      map(
+        res => html`
+          <project-item-component
+            createdAt=${res.createdAt}
+            id=${res.id}
+            name=${res.name}
+            ownedBy=${res.ownedBy}
+          ></project-item-component>
+        `
+      ),
+    );
+  }
+}
 ```

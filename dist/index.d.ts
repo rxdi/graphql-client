@@ -1,7 +1,5 @@
 import { ModuleWithServices } from '@rxdi/core';
-import { PresetConfig } from 'apollo-boost';
+import { GraphqlModuleConfig } from './graphql.injection';
 export declare class GraphqlModule {
-    static forRoot(config: PresetConfig, documents?: any): ModuleWithServices;
+    static forRoot({ uri, pubsub, authorization }?: GraphqlModuleConfig, documents?: {}): ModuleWithServices;
 }
-export * from './injection.tokens';
-export * from './graphql-helpers';
