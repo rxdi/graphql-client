@@ -1,12 +1,12 @@
 {
   "name": "@rxdi/graphql-client",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "main": "index.js",
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rxdi/router"
+    "url": "https://github.com/rxdi/graphql-client"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.6.2",

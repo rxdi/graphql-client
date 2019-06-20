@@ -1,4 +1,4 @@
-# Router module for client side rxdi application
+# Graphql module for client side rxdi application build with Apollo-graphql
 
 #### Install
 ```bash
