@@ -19,7 +19,7 @@
   "devDependencies": {
     "typescript": "^3.5.1",
     "graphql": "^14.3.1",
-    "@rxdi/core": "^0.6.4"
+    "@rxdi/core": "^0.6.6"
   },
   "types": "./dist/index.d.ts",
   "module": "./dist/index.js",
