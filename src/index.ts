@@ -5,21 +5,22 @@ import {
   ApolloClient,
   GraphqlDocuments,
   GraphqlModuleConfig,
-  noop
+  noopHeaders
 } from './graphql.injection';
 import { ApolloClient as ApolloClientOriginal } from 'apollo-client';
-import { concat, ApolloLink, split } from 'apollo-link';
+import { concat, ApolloLink, split, Observable, from } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import { setContext } from 'apollo-link-context';
 
 @Module({})
 export class GraphqlModule {
   public static forRoot(
-    { uri, pubsub, authorization }: GraphqlModuleConfig = {} as any,
+    { uri, pubsub, onRequest }: GraphqlModuleConfig = {} as any,
     documents = {}
   ): ModuleWithServices {
-    const connectionParams = { authorization: '' };
+    const headers = {};
     return {
       module: GraphqlModule,
       providers: [
@@ -32,17 +33,20 @@ export class GraphqlModule {
           useFactory: () =>
             new ApolloClientOriginal({
               link: concat(
-                new ApolloLink((operation, forward) => {
-                  const token = authorization || noop;
-                  const Authorization = token();
-                  connectionParams.authorization = Authorization;
-                  operation.setContext({
-                    headers: {
-                      Authorization
-                    }
-                  });
-                  return forward(operation);
-                }),
+                from([
+                  setContext(async operation => {
+                    const method = onRequest || noopHeaders;
+                    let headersMap: Headers =
+                      (await method.call(operation)) || {};
+                    headersMap.forEach((v, k) => {
+                      headers[k] = v;
+                    });
+                    return {
+                      headers
+                    };
+                  }),
+                  new ApolloLink((operation, forward) => forward(operation))
+                ]),
                 split(
                   ({ query }) => {
                     const { kind, operation } = getMainDefinition(query);
@@ -54,7 +58,7 @@ export class GraphqlModule {
                   new WebSocketLink(
                     new SubscriptionClient(pubsub, {
                       lazy: true,
-                      connectionParams,
+                      connectionParams: headers,
                       reconnect: true
                     })
                   ),
@@ -71,5 +75,9 @@ export class GraphqlModule {
 
 export * from './graphql.injection';
 export * from './graphq.helpers';
-export { QueryOptions, SubscriptionOptions, MutationOptions } from 'apollo-client';
+export {
+  QueryOptions,
+  SubscriptionOptions,
+  MutationOptions
+} from 'apollo-client';
 export { DataProxy } from 'apollo-cache';

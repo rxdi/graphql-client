@@ -12,6 +12,8 @@ export const GraphqlDocuments = 'graphql-documents';
 export interface GraphqlModuleConfig {
   uri: string;
   pubsub: string;
-  authorization?(): string;
+  onRequest?(): Promise<Headers>;
 }
-export const noop = () => '';
+export const noopHeaders = () => new Headers();
+export const noop = () => null;
+

@@ -16,6 +16,11 @@ import { DOCUMENTS } from './@introspection/documents';
 @Module({
   imports: [
     GraphqlModule.forRoot({
+      async onRequest(this: GraphQLRequest) {
+        const headers = new Headers();
+        headers.append('authorization', '');
+        return headers;
+      },
       uri: 'http://localhost:9000/graphql',
       pubsub: 'ws://localhost:9000/subscriptions',
     }, DOCUMENTS),
