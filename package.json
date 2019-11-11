@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/rxdi/graphql-client"
   },
+  "scripts": {
+    "test":"echo Test Graphql client"
+  },
   "dependencies": {
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
@@ -18,8 +21,8 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
-    "typescript": "^3.5.1",
-    "graphql": "^14.3.1",
+    "typescript": "^3.5.3",
+    "graphql": "^14.5.8",
     "@rxdi/core": "^0.7.37"
   },
   "types": "./dist/index.d.ts",
